@@ -35,13 +35,42 @@ class Product(models.Model):
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        verbose_name="Магазин",
+        verbose_name="Магазин", # от кой магазин купувам продукта
     )
 
     unit = models.CharField(
         max_length=10,
         choices=UNIT_CHOICES,
         verbose_name="Мерна единица",
+    )
+
+    calories_per_100 = models.PositiveIntegerField(
+        default=0,
+        verbose_name="Калории / 100g",
+    )
+
+    protein_per_100 = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        default=0,
+        validators=[MinValueValidator(0)],
+        verbose_name="Белтъчини / 100g",
+    )
+
+    carbs_per_100 = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        default=0,
+        validators=[MinValueValidator(0)],
+        verbose_name="Въглехидрати / 100g",
+    )
+
+    fat_per_100 = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        default=0,
+        validators=[MinValueValidator(0)],
+        verbose_name="Мазнини / 100g",
     )
 
     price = models.DecimalField(
@@ -53,6 +82,7 @@ class Product(models.Model):
         help_text="Цена за килограм или опаковка",  # за течности - цена за опаковка!
     )
 
+    
     is_basic = models.BooleanField(
         default=False,
         verbose_name="Основен продукт",

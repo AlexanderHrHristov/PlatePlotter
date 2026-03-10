@@ -1,14 +1,12 @@
 from django.db import models
-from inventory.models import Product
 from django.core.validators import MinValueValidator
-
+from inventory.models import Product
 
 
 class Dish(models.Model):
     name = models.CharField(max_length=50, unique=True)
     description = models.TextField(blank=True)
 
-   
     products = models.ManyToManyField(
         Product,
         through="RecipeItem",
@@ -20,6 +18,38 @@ class Dish(models.Model):
 
     def __str__(self):
         return self.name
+
+    def total_calories(self):
+        total = 0
+
+        for item in self.recipeitem_set.all():
+            total += (item.quantity_needed / 100) * item.product.calories_per_100
+
+        return round(total, 2)
+
+    def total_protein(self):
+        total = 0
+
+        for item in self.recipeitem_set.all():
+            total += (item.quantity_needed / 100) * item.product.protein_per_100
+
+        return round(total, 2)
+
+    def total_carbs(self):
+        total = 0
+
+        for item in self.recipeitem_set.all():
+            total += (item.quantity_needed / 100) * item.product.carbs_per_100
+
+        return round(total, 2)
+
+    def total_fat(self):
+        total = 0
+
+        for item in self.recipeitem_set.all():
+            total += (item.quantity_needed / 100) * item.product.fat_per_100
+
+        return round(total, 2)
 
 
 class RecipeItem(models.Model):

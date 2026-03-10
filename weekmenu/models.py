@@ -15,9 +15,80 @@ class WeekMenu(models.Model):
     def __str__(self):
         return f"Седмица от {self.start_date}"
 
+    def total_calories_for_day(self, day):
+        total = 0
+
+        meals = self.meals.filter(day=day)
+
+        for meal in meals:
+            total += meal.total_calories()
+
+        return round(total, 2)
+
+    def total_protein_for_day(self, day):
+        total = 0
+
+        meals = self.meals.filter(day=day)
+
+        for meal in meals:
+            total += meal.total_protein()
+
+        return round(total, 2)
+
+    def total_carbs_for_day(self, day):
+        total = 0
+
+        meals = self.meals.filter(day=day)
+
+        for meal in meals:
+            total += meal.total_carbs()
+
+        return round(total, 2)
+
+    def total_fat_for_day(self, day):
+        total = 0
+
+        meals = self.meals.filter(day=day)
+
+        for meal in meals:
+            total += meal.total_fat()
+
+        return round(total, 2)
+
+    def total_calories_for_week(self):
+        total = 0
+
+        for meal in self.meals.all():
+            total += meal.total_calories()
+
+        return round(total, 2)
+
+    def total_protein_for_week(self):
+        total = 0
+
+        for meal in self.meals.all():
+            total += meal.total_protein()
+
+        return round(total, 2)
+
+    def total_carbs_for_week(self):
+        total = 0
+
+        for meal in self.meals.all():
+            total += meal.total_carbs()
+
+        return round(total, 2)
+
+    def total_fat_for_week(self):
+        total = 0
+
+        for meal in self.meals.all():
+            total += meal.total_fat()
+
+        return round(total, 2)
+
 
 class Meal(models.Model):
-
     DAY_CHOICES = [
         (1, "Понеделник"),
         (2, "Вторник"),
@@ -75,3 +146,23 @@ class Meal(models.Model):
 
     def __str__(self):
         return f"{self.week_menu} - {self.get_day_display()} {self.get_meal_type_display()}"
+
+    def total_calories(self):
+        if self.dish:
+            return self.dish.total_calories()
+        return 0
+
+    def total_protein(self):
+        if self.dish:
+            return self.dish.total_protein()
+        return 0
+
+    def total_carbs(self):
+        if self.dish:
+            return self.dish.total_carbs()
+        return 0
+
+    def total_fat(self):
+        if self.dish:
+            return self.dish.total_fat()
+        return 0
