@@ -9,12 +9,12 @@ class Dish(models.Model):
 
     products = models.ManyToManyField(
         Product,
-        through="RecipeItem",
-        related_name="dishes",
+        through='RecipeItem',
+        related_name='dishes',
     )
 
     class Meta:
-        ordering = ("name",)
+        ordering= ('name',)
 
     def __str__(self):
         return self.name
@@ -67,8 +67,8 @@ class RecipeItem(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=("dish", "product"),
-                name="uq_recipeitem_dish_product",
+                fields=('dish', 'product'),
+                name='dish_product',
             )
         ]
 

@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import Product, Store, Inventory
 
-# Register your models here.
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ('name', 'brand', 'store', 'category', 'unit', 'price', 'is_basic')

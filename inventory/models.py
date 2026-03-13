@@ -19,6 +19,18 @@ class Product(models.Model):
         ("pcs", "Опаковка (бр.)"),  # ползвам за продукти на брой/опаковка + течности (мляко, бира и т.н.)
     ]
 
+    CATHEGORY_CHOICES = [
+        ("meat_fish", "Месо, риба, яйца"),
+        ("milk_cheese", "Млечни продукти"),
+        ("grains_legumes", "Зърнени храни и бобови"),
+        ("fruit_vegetables", "Плодове и зеленчуци"),
+        ("nuts_oils", "Ядки и мазнини"),
+        ("desserts_sweets", "Десерти и сладки храни"),
+        ("drinks", "Напитки"),
+        ("packaged_store", "Готови храни"),
+
+    ]
+
     name = models.CharField(
         max_length=50,
         verbose_name="Продукт",
@@ -103,8 +115,8 @@ class Inventory(models.Model):
     product = models.OneToOneField(
         Product,
         on_delete=models.CASCADE,
-        related_name="inventory",
-        verbose_name="Продукт",
+        related_name='inventory',
+        verbose_name='Продукт',
     )
 
     available_quantity = models.DecimalField(
@@ -112,7 +124,7 @@ class Inventory(models.Model):
         decimal_places=2,
         default=0,
         validators=[MinValueValidator(0)],
-        verbose_name="Налично количество",
+        verbose_name='Налично количество',
     )
 
     minimum_quantity = models.DecimalField(
@@ -120,10 +132,10 @@ class Inventory(models.Model):
         decimal_places=2,
         default=0,
         validators=[MinValueValidator(0)],
-        verbose_name="Минимално количество",
+        verbose_name='Минимално количество',
     )
 
     def __str__(self):
         # g -> "g", pcs -> "бр."
-        unit_label = "g" if self.product.unit == "g" else "бр."
-        return f"{self.product} - {self.available_quantity} {unit_label}"
+        unit_label = 'g' if self.product.unit == 'g' else 'бр.'
+        return f'{self.product} - {self.available_quantity} {unit_label}'
