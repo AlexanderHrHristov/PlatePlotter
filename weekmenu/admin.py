@@ -1,3 +1,20 @@
 from django.contrib import admin
+from .models import WeekMenu, Meal
 
-# Register your models here.
+
+class MealInline(admin.TabularInline):
+    model = Meal
+    extra = 1
+
+
+@admin.register(WeekMenu)
+class WeekMenuAdmin(admin.ModelAdmin):
+    list_display = ('start_date', 'notes')
+    search_fields = ('start_date',)
+    inlines = [MealInline]
+
+
+@admin.register(Meal)
+class MealAdmin(admin.ModelAdmin):
+    list_display = ('week_menu', 'day', 'meal_type', 'dish', 'eating_out')
+    list_filter = ('day', 'meal_type', 'eating_out')
